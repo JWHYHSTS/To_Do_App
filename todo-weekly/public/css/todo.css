@@ -1,0 +1,377 @@
+/* =========================
+   Status badges
+   ========================= */
+.status-badge { font-weight: 600; }
+.badge-todo { background: #6c757d; }
+.badge-progress { background: #0d6efd; }
+.badge-review { background: #fd7e14; }
+.badge-done { background: #198754; }
+
+/* =========================
+   Weekly planner desktop grid
+   ========================= */
+.planner-grid {
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.planner-head {
+  display: grid;
+  grid-template-columns: 90px repeat(7, 1fr);
+  background: #f8f9fa;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.planner-corner {
+  border-right: 1px solid rgba(0,0,0,.1);
+  height: 56px;
+}
+.planner-dayhead {
+  padding: 10px;
+  border-right: 1px solid rgba(0,0,0,.08);
+  min-height: 56px;
+}
+.planner-row {
+  display: grid;
+  grid-template-columns: 90px repeat(7, 1fr);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.planner-hour {
+  padding: 10px;
+  font-size: 0.875rem;
+  color: #6c757d;
+  border-right: 1px solid rgba(0,0,0,.08);
+  background: #fcfcfd;
+}
+.planner-cell {
+  padding: 10px;
+  border-right: 1px solid rgba(0,0,0,.06);
+  min-height: 88px;
+  position: relative;
+}
+.cell-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: .7;
+}
+.task-chip {
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 28px;
+  background: #fff;
+}
+.task-card .form-select {
+  min-width: 180px;
+}
+
+/* =========================
+   Sidebar Only Layout (Polished) - FIX "khoảng trống" bên phải
+   ========================= */
+
+/* Mobile-first shell: allow page to scroll normally */
+.app-shell {
+  display: block;
+  min-height: 100vh;
+}
+.app-main {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Desktop: flex shell */
+@media (min-width: 992px) {
+  .app-shell { display: flex; }
+}
+
+/* Desktop sidebar */
+.sidebar-dock{
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 240px;
+  background: #1f252b;
+  color: #fff;
+  z-index: 1030;
+  border-right: 1px solid rgba(255,255,255,.08);
+  overflow: hidden; /* prevent text leaking */
+}
+
+.sidebar-inner{
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand{
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar-brand .brand-title{
+  font-weight: 700;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+
+.sidebar-toggle{
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.18);
+  background: transparent;
+  color: rgba(255,255,255,.9);
+}
+.sidebar-toggle:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* ==== FIX: bỏ "gutter" bên phải để pill active khít mép ==== */
+.sidebar-nav{
+  padding: 12px 0 12px 12px; /* left 12px, RIGHT = 0 để không còn khoảng trống */
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Link chiếm full width */
+.sidebar-nav .sidebar-link{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+
+  width: 100%;                /* QUAN TRỌNG: full chiều ngang */
+  margin: 6px 0;              /* không tạo khoảng trống bên phải */
+
+  padding: 0 12px;
+  text-decoration: none;
+  color: rgba(255,255,255,.88);
+
+  /* Bo đẹp nhưng "khít" mép phải */
+  border-radius: 12px 0 0 12px;  /* phải = 0 để sát mép */
+  position: relative;
+  overflow: hidden;
+  transition: background .15s ease, transform .05s ease;
+}
+
+.sidebar-nav .sidebar-link:hover{
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.sidebar-nav .sidebar-link:active{
+  transform: translateY(1px);
+}
+
+/* Active: highlight khít mép phải */
+.sidebar-nav .sidebar-link.active{
+  background: rgba(13,110,253,.18);
+  border: 1px solid rgba(13,110,253,.22);
+  color: #fff;
+  box-shadow: none;
+}
+
+.sidebar-ic{
+  width: 36px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  opacity: .95;
+}
+
+.sidebar-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Footer */
+.sidebar-footer{
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin-top: 0;
+}
+.sidebar-footer .user-line{
+  color: rgba(255,255,255,.65);
+  margin-bottom: 10px;
+}
+
+/* Desktop content push */
+@media (min-width: 992px) {
+  .app-main { margin-left: 240px; }
+}
+
+/* Collapsed (desktop) */
+body.sidebar-collapsed .sidebar-dock{
+  width: 72px;
+}
+body.sidebar-collapsed .sidebar-brand{
+  justify-content: center;
+}
+body.sidebar-collapsed .brand-title{
+  display: none;
+}
+
+/* Khi collapsed: vẫn giữ RIGHT=0 để không hở */
+body.sidebar-collapsed .sidebar-nav{
+  padding: 10px 0 10px 10px;
+}
+body.sidebar-collapsed .sidebar-nav .sidebar-link{
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px 0 0 12px;
+}
+body.sidebar-collapsed .sidebar-text{
+  display: none !important;
+}
+body.sidebar-collapsed .sidebar-footer .user-line{
+  display: none;
+}
+body.sidebar-collapsed .sidebar-footer .btn{
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: .9rem;
+}
+
+@media (min-width: 992px) {
+  body.sidebar-collapsed .app-main { margin-left: 72px; }
+}
+
+/* Mobile top mini bar */
+.mobile-top{
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Offcanvas: make buttons/links look consistent */
+.offcanvas .list-group-item{
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+/* =========================
+   FINAL SIDEBAR FIX (no right black gap)
+   Paste at END of todo.css
+   ========================= */
+
+/* tránh hở ngang do overflow */
+html, body { overflow-x: hidden; }
+
+/* sidebar không nhận padding từ đâu khác */
+.sidebar-dock { overflow: hidden; }
+
+/* Brand & Nav: KHÔNG dùng px-* nữa -> tự set bằng CSS */
+.sidebar-brand{
+  padding: 14px 14px !important;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar-nav{
+  padding: 12px 0 !important;     /* 0 bên phải để khỏi hở */
+  margin: 0 !important;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Link full-width thực sự */
+.sidebar-nav .sidebar-link{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+
+  /* quan trọng: không có margin-right/padding-right gây hở */
+  margin: 6px 0 !important;
+  padding: 0 14px !important;     /* padding nằm TRONG pill */
+  height: 52px;
+
+  border-radius: 14px !important; /* bo tròn 4 góc */
+  text-decoration: none;
+  color: rgba(255,255,255,.88);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Icon và text */
+.sidebar-ic{
+  width: 36px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  opacity: .95;
+}
+
+.sidebar-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover/Active đẹp và “khít” */
+.sidebar-nav .sidebar-link:hover{
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.sidebar-nav .sidebar-link.active{
+  background: rgba(13,110,253,.18);
+  border: 1px solid rgba(13,110,253,.22);
+  color: #fff;
+}
+
+/* Footer khít */
+.sidebar-footer{
+  padding: 12px 14px !important;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+/* Desktop push content */
+@media (min-width: 992px){
+  .app-main{ margin-left: 240px; }
+}
+
+/* Collapsed desktop */
+body.sidebar-collapsed .sidebar-dock{ width: 72px; }
+body.sidebar-collapsed .brand-title{ display: none !important; }
+
+body.sidebar-collapsed .sidebar-brand{
+  justify-content: center;
+  padding: 14px 10px !important;
+}
+
+body.sidebar-collapsed .sidebar-nav .sidebar-link{
+  justify-content: center;
+  padding: 0 10px !important;
+}
+
+body.sidebar-collapsed .sidebar-text{ display: none !important; }
+
+@media (min-width: 992px){
+  body.sidebar-collapsed .app-main{ margin-left: 72px; }
+}
