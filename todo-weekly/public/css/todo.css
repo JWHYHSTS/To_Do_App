@@ -375,3 +375,29 @@ body.sidebar-collapsed .sidebar-text{ display: none !important; }
 @media (min-width: 992px){
   body.sidebar-collapsed .app-main{ margin-left: 72px; }
 }
+/* FIX dropdown select trong dark UI (native popup thường nền trắng) */
+.nx select.form-select,
+.nx select.form-control,
+.nx .form-select,
+.nx .form-control[type="select"]{
+  color: #e9eefc;                 /* chữ trên control */
+  background-color: rgba(10,14,22,.65);
+  border-color: rgba(120,140,255,.35);
+}
+
+/* Quan trọng: option bên trong popup */
+.nx select option{
+  color: #0b1220;                 /* chữ đen để đọc trên nền trắng */
+  background: #ffffff;            /* nền trắng cho chắc */
+}
+
+/* Option đang chọn (một số browser có hỗ trợ) */
+.nx select option:checked{
+  background: #2948ff;
+  color: #ffffff;
+}
+
+/* Placeholder option kiểu "-- Tất cả --" */
+.nx select option[value=""]{
+  color: #334155;
+}

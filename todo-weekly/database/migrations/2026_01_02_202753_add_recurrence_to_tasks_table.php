@@ -26,9 +26,9 @@ return new class extends Migration
                 $table->date('recurrence_until')->nullable()->after('recurrence');
             }
 
-            if (!Schema::hasColumn('tasks', 'last_generated_at')) {
-                $table->dateTime('last_generated_at')->nullable()->after('recurrence_until');
-            }
+            if (!Schema::hasColumn('tasks', 'last_generated_for')) {
+    $table->date('last_generated_for')->nullable()->after('recurrence_until');
+}
         });
     }
 
@@ -38,7 +38,7 @@ return new class extends Migration
             // Drop theo kiểu “nếu có”
             $cols = [];
 
-            foreach (['last_generated_at','recurrence_until','recurrence','series_id','is_template'] as $c) {
+            foreach (['last_generated_for','recurrence_until','recurrence','series_id','is_template'] as $c) {
                 if (Schema::hasColumn('tasks', $c)) $cols[] = $c;
             }
 

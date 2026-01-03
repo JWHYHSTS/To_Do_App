@@ -2,15 +2,24 @@
 
 @section('title', 'Sửa Task')
 
-@section('content')
-<h1 class="h4 mb-3">Sửa Task</h1>
+@push('styles')
+<link rel="stylesheet"
+      href="{{ asset('css/task-form-wow.css') }}?v={{ file_exists(public_path('css/task-form-wow.css')) ? filemtime(public_path('css/task-form-wow.css')) : time() }}">
+@endpush
 
-<div class="card task-form-card">
-  <div class="card-body">
+@section('content')
+  <div class="task-page">
+
     <form method="POST" action="{{ route('tasks.update', $task) }}">
-      @csrf @method('PUT')
-      @include('tasks._form', ['task' => $task, 'submitLabel' => 'Lưu thay đổi'])
+      @csrf
+      @method('PUT')
+
+      @include('tasks._form', [
+        'task' => $task,
+        'statuses' => $statuses,
+        'priorities' => $priorities,
+        'submitLabel' => 'Lưu thay đổi'
+      ])
     </form>
   </div>
-</div>
 @endsection

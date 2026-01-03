@@ -1,0 +1,191 @@
+/* =========================================================
+   auth-reset.css — Premium Reset Password UI
+   ========================================================= */
+
+/* Design tokens */
+:root{
+  --font: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  --text:#0b1220;
+  --muted:rgba(15,23,42,.65);
+
+  --blue:#2948ff;
+  --cyan:#00d1ff;
+  --pink:#ff4fd8;
+  --danger:#dc2626;
+
+  --radius-md:16px;
+  --radius-lg:22px;
+  --tap:44px;
+
+  --shadow-1:0 18px 44px rgba(15,23,42,.18);
+  --shadow-2:0 32px 86px rgba(15,23,42,.22);
+  --ring:0 0 0 4px rgba(41,72,255,.22);
+}
+
+/* Base */
+.reset-page, .reset-page *{ box-sizing:border-box; }
+.reset-page{
+  font-family:var(--font);
+  color:var(--text);
+}
+
+/* Layout */
+.reset-shell{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:clamp(16px,4vw,48px);
+  background:
+    radial-gradient(1000px 500px at 20% 10%,rgba(41,72,255,.25),transparent 55%),
+    radial-gradient(900px 480px at 85% 15%,rgba(0,209,255,.15),transparent 60%),
+    radial-gradient(900px 520px at 50% 95%,rgba(255,79,216,.12),transparent 60%),
+    #f6f7fb;
+}
+
+.reset-card{
+  width:min(520px,100%);
+  border-radius:var(--radius-lg);
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(15,23,42,.08);
+  box-shadow:var(--shadow-2);
+  overflow:hidden;
+  position:relative;
+}
+
+.reset-glow{
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(700px 220px at 20% 0%,rgba(41,72,255,.25),transparent 55%),
+    radial-gradient(680px 220px at 80% 0%,rgba(0,209,255,.15),transparent 55%);
+  pointer-events:none;
+}
+
+/* Header */
+.reset-header{
+  padding:28px;
+  border-bottom:1px solid rgba(15,23,42,.08);
+  display:flex;
+  gap:14px;
+}
+
+.reset-badge{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(41,72,255,.18),rgba(0,209,255,.1));
+  display:grid;place-items:center;
+}
+
+.reset-badge__dot{
+  width:18px;height:18px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan),var(--pink));
+}
+
+.reset-title{
+  margin:0;
+  font-size:clamp(24px,3vw,32px);
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+
+.reset-title__gradient{
+  background:linear-gradient(90deg,#111827 0%,#2948ff 45%,#00d1ff 75%,#ff4fd8 110%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.reset-subtitle{
+  margin-top:6px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* Body */
+.reset-body{ padding:28px; }
+
+.field{ display:grid; gap:6px; margin-bottom:18px; }
+.field__label{ font-size:13px;font-weight:800; }
+.field__control{ position:relative; }
+.field__input{
+  width:100%;
+  min-height:var(--tap);
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(15,23,42,.15);
+  font-size:14px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field__input:focus-visible{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:var(--ring);
+}
+
+/* Error inline */
+.field__control.has-error .field__input{
+  padding-right:200px;
+  border-color:rgba(220,38,38,.35);
+}
+.field__errorInline{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  background:linear-gradient(90deg,rgba(220,38,38,.14),rgba(255,79,216,.08));
+  color:#991b1b;
+  font-size:12px;
+  font-weight:800;
+  padding:6px 10px;
+  border-radius:999px;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+/* Actions */
+.reset-actions{
+  margin-top:24px;
+  display:grid;
+  gap:12px;
+}
+
+.rbtn{
+  min-height:var(--tap);
+  border-radius:16px;
+  border:1px solid transparent;
+  font-weight:900;
+  cursor:pointer;
+  position:relative;
+}
+
+.rbtn--full{ width:100%; }
+
+.rbtn--primary{
+  color:#fff;
+  background:linear-gradient(120deg,#2948ff 0%,#3b5bff 35%,#00d1ff 70%,#ff4fd8 115%);
+  box-shadow:0 20px 48px rgba(41,72,255,.3);
+}
+
+.rbtn__glow{
+  position:absolute;inset:-2px;
+  background:radial-gradient(300px 120px at 20% 20%,rgba(255,255,255,.6),transparent 60%);
+}
+
+.rbtn--ghost{
+  background:rgba(255,255,255,.6);
+  border:1px solid rgba(15,23,42,.12);
+}
+
+/* Meta */
+.reset-meta{
+  margin-top:14px;
+  font-size:12px;
+  color:rgba(91,101,118,.85);
+}
+.reset-meta__brand{
+  font-weight:900;
+  background:linear-gradient(90deg,#2948ff,#00d1ff,#ff4fd8);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}

@@ -1,0 +1,37 @@
+/* ========= TOM SELECT — DARK TECH DROPDOWN ========= */
+.ts-wrapper{ width:100%; }
+
+.ts-control{
+  min-height: 48px;
+  border-radius: 16px !important;
+  padding: 10px 12px !important;
+  background: rgba(10,14,22,.62) !important;
+  border: 1px solid rgba(120,140,255,.32) !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35) !important;
+  backdrop-filter: blur(10px);
+}
+.ts-control, .ts-control input{
+  color:#eaf0ff !important;
+  font-weight: 850;
+}
+.ts-control:focus-within{
+  border-color: rgba(120,140,255,.78) !important;
+  box-shadow: 0 0 0 4px rgba(120,140,255,.22), 0 22px 60px rgba(0,0,0,.42) !important;
+}
+
+.ts-dropdown{
+  margin-top: 8px;
+  border-radius: 16px !important;
+  overflow: hidden;
+  background: rgba(7,10,16,.92) !important;
+  border: 1px solid rgba(120,140,255,.22) !important;
+  box-shadow: 0 28px 90px rgba(0,0,0,.55) !important;
+  backdrop-filter: blur(12px);
+}
+.ts-dropdown .option{
+  padding: 12px 12px;
+  color: rgba(235,242,255,.92);
+  font-weight: 800;
+}
+.ts-dropdown .active{ background: rgba(41,72,255,.22) !important; }
+.ts-dropdown .selected{ background: rgba(255,79,216,.18) !important; }

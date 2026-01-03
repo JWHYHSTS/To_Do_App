@@ -4,18 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 
 class Task extends Model
 {
-    protected static function booted()
-{
-    static::saving(function ($task) {
-        if ($task->repeat_weekly && empty($task->series_id)) {
-            $task->series_id = (string) Str::uuid();
-        }
-    });
-}
     protected $fillable = [
         'user_id',
         'title',
@@ -28,13 +19,23 @@ class Task extends Model
         'started_at',
         'reviewed_at',
         'completed_at',
+
+        // ✅ recurrence fields (BẮT BUỘC)
+        'is_template',
+        'series_id',
+        'recurrence',
+        'recurrence_until',
+        'last_generated_for',
     ];
 
     protected $casts = [
-        'scheduled_date' => 'date',
-        'started_at'     => 'datetime',
-        'reviewed_at'    => 'datetime',
-        'completed_at'   => 'datetime',
+        'scheduled_date'      => 'date',
+        'recurrence_until'    => 'date',
+        'last_generated_for'  => 'date',
+        'is_template'         => 'boolean',
+        'started_at'          => 'datetime',
+        'reviewed_at'         => 'datetime',
+        'completed_at'        => 'datetime',
     ];
 
     public const STATUS_TODO     = 'To Do';
@@ -51,46 +52,37 @@ class Task extends Model
 
     public const PRIORITIES = ['low', 'medium', 'high'];
 
+    // ✅ helper chuẩn hóa time về HH:MM (chống 09:15 vs 09:15:00)
+    public static function normalizeTime(string $time): string
+    {
+        return substr(trim($time), 0, 5);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Business rule: set timestamps when moving forward in the workflow.
-     * NOTE: Do not delete old timestamps when moving backward.
-     */
     public function applyStatusTransition(string $newStatus): void
     {
-        $now = now(); // respects app timezone
+        $now = now();
 
-        if ($this->status === $newStatus) {
-            return;
-        }
+        if ($this->status === $newStatus) return;
 
-        // Forward transitions timestamps
         if ($this->status === self::STATUS_TODO && $newStatus === self::STATUS_PROGRESS) {
             $this->started_at ??= $now;
         }
-
         if ($this->status === self::STATUS_PROGRESS && $newStatus === self::STATUS_REVIEW) {
             $this->reviewed_at ??= $now;
         }
-
         if ($this->status === self::STATUS_REVIEW && $newStatus === self::STATUS_DONE) {
             $this->completed_at ??= $now;
         }
 
-        // Also allow quick jumps forward (optional convenience)
-        if ($newStatus === self::STATUS_PROGRESS) {
-            $this->started_at ??= $now;
-        }
-        if ($newStatus === self::STATUS_REVIEW) {
-            $this->reviewed_at ??= $now;
-        }
-        if ($newStatus === self::STATUS_DONE) {
-            $this->completed_at ??= $now;
-        }
+        // tiện ích cho “nhảy nhanh”
+        if ($newStatus === self::STATUS_PROGRESS) $this->started_at ??= $now;
+        if ($newStatus === self::STATUS_REVIEW)   $this->reviewed_at ??= $now;
+        if ($newStatus === self::STATUS_DONE)     $this->completed_at ??= $now;
 
         $this->status = $newStatus;
     }

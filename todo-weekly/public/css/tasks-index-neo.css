@@ -1,0 +1,519 @@
+/* =========================================================
+   tasks-index-neo.css — Neo Tech Dark UI (high-end)
+   Put in: public/css/tasks-index-neo.css
+   ========================================================= */
+
+:root{
+  --font: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+
+  --bg0:#06070B;
+  --bg1:#090B12;
+
+  --card: rgba(255,255,255,.045);
+  --card2: rgba(255,255,255,.065);
+  --stroke: rgba(226,232,240,.10);
+  --stroke2: rgba(226,232,240,.16);
+
+  --text: rgba(241,245,249,.92);
+  --muted: rgba(203,213,225,.70);
+
+  --blue:#4C7DFF;
+  --cyan:#00E5FF;
+  --violet:#A855F7;
+  --pink:#FF4FD8;
+  --green:#22C55E;
+  --amber:#F59E0B;
+  --red:#EF4444;
+
+  --r-sm:12px;
+  --r-md:16px;
+  --r-lg:22px;
+
+  --shadow1: 0 18px 54px rgba(0,0,0,.45);
+  --shadow2: 0 40px 120px rgba(0,0,0,.62);
+
+  --ring: 0 0 0 4px rgba(76,125,255,.24);
+}
+
+.nx, .nx *{ box-sizing:border-box; }
+.nx{
+  font-family: var(--font);
+  color: var(--text);
+  padding: 14px 0 28px;
+  position: relative;
+}
+
+/* Deep dark background, subtle gradients */
+.nx::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 520px at 18% 12%, rgba(76,125,255,.18), transparent 55%),
+    radial-gradient(820px 520px at 82% 18%, rgba(0,229,255,.12), transparent 60%),
+    radial-gradient(900px 620px at 50% 118%, rgba(255,79,216,.10), transparent 62%),
+    linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 55%, #050610 100%);
+}
+
+/* ===== Top header ===== */
+.nx-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  padding: 18px 18px 16px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  box-shadow: var(--shadow2);
+  overflow:hidden;
+  position:relative;
+}
+
+.nx-top::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(1200px 520px at 10% -10%, rgba(76,125,255,.22), transparent 55%),
+    radial-gradient(1000px 520px at 95% -10%, rgba(0,229,255,.14), transparent 58%),
+    radial-gradient(900px 560px at 50% 120%, rgba(255,79,216,.10), transparent 60%);
+  opacity:.9;
+  pointer-events:none;
+}
+
+.nx-top__left{
+  display:flex;
+  gap:12px;
+  min-width:0;
+  position:relative;
+  z-index:1;
+}
+
+.nx-brand{
+  width:44px;height:44px;
+  border-radius: 14px;
+  border:1px solid rgba(76,125,255,.22);
+  background: linear-gradient(180deg, rgba(76,125,255,.18), rgba(0,229,255,.08));
+  box-shadow: 0 18px 50px rgba(76,125,255,.10);
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+
+.nx-brand__dot{
+  width:18px;height:18px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan), var(--pink));
+  box-shadow: 0 18px 34px rgba(0,229,255,.12);
+}
+
+.nx-head{ min-width:0; }
+.nx-kicker{
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color: rgba(203,213,225,.72);
+}
+.nx-title{
+  margin: 6px 0 0;
+  font-size: 30px;
+  font-weight: 950;
+  letter-spacing:-.04em;
+  line-height:1.06;
+}
+.nx-sub{
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 78ch;
+}
+
+.nx-top__right{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+  position:relative;
+  z-index:1;
+}
+
+/* ===== Buttons ===== */
+.nx-btn{
+  border-radius: 14px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  text-decoration:none;
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  font-weight: 950;
+  font-size: 13px;
+  letter-spacing:-.01em;
+  cursor:pointer;
+  transition: transform .14s ease, box-shadow .18s ease, filter .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+  user-select:none;
+  white-space:nowrap;
+}
+
+.nx-btn:focus-visible{ outline:none; box-shadow: var(--ring); }
+
+.nx-ico{
+  width:22px;height:22px;
+  border-radius: 10px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(226,232,240,.14);
+  font-weight: 950;
+}
+
+/* each button has its own signature */
+.nx-btn--create{
+  color: rgba(7,10,18,.96);
+  background: linear-gradient(120deg, var(--cyan) 0%, var(--blue) 48%, var(--pink) 118%);
+  box-shadow: 0 24px 72px rgba(0,229,255,.14);
+}
+.nx-btn--create:hover{ transform: translateY(-1px); filter: saturate(1.06) contrast(1.02); }
+
+.nx-btn--kanban{
+  color: rgba(241,245,249,.92);
+  background: linear-gradient(120deg, rgba(168,85,247,.22), rgba(76,125,255,.14));
+  border-color: rgba(168,85,247,.22);
+}
+.nx-btn--kanban:hover{ transform: translateY(-1px); box-shadow: 0 18px 56px rgba(168,85,247,.14); }
+
+.nx-btn--apply{
+  color: rgba(7,10,18,.96);
+  background: linear-gradient(120deg, rgba(34,197,94,.92), rgba(0,229,255,.66));
+  box-shadow: 0 20px 64px rgba(34,197,94,.12);
+}
+.nx-btn--apply:hover{ transform: translateY(-1px); filter: saturate(1.05); }
+
+.nx-btn--reset{
+  color: rgba(241,245,249,.92);
+  background: rgba(255,255,255,.06);
+  border-color: rgba(226,232,240,.14);
+}
+.nx-btn--reset:hover{ transform: translateY(-1px); border-color: rgba(226,232,240,.22); box-shadow: 0 18px 52px rgba(0,0,0,.48); }
+
+.nx-btn--danger{
+  color: rgba(241,245,249,.92);
+  background: linear-gradient(120deg, rgba(239,68,68,.22), rgba(245,158,11,.14));
+  border-color: rgba(239,68,68,.22);
+}
+.nx-btn--danger:hover{ transform: translateY(-1px); box-shadow: 0 18px 56px rgba(239,68,68,.14); }
+.nx-btn--danger:disabled{
+  opacity:.40;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
+.nx-btn--hot{
+  color: rgba(7,10,18,.96);
+  background: linear-gradient(120deg, rgba(239,68,68,.92), rgba(255,79,216,.64));
+  box-shadow: 0 22px 70px rgba(239,68,68,.14);
+}
+.nx-btn--hot:hover{ transform: translateY(-1px); filter: saturate(1.05); }
+
+.nx-btn--edit{
+  color: rgba(7,10,18,.96);
+  background: linear-gradient(120deg, rgba(245,158,11,.92), rgba(255,79,216,.72));
+  box-shadow: 0 18px 56px rgba(245,158,11,.12);
+}
+.nx-btn--edit:hover{ transform: translateY(-1px); filter:saturate(1.04); }
+
+.nx-btn--del{
+  color: rgba(241,245,249,.92);
+  background: rgba(255,255,255,.06);
+  border-color: rgba(239,68,68,.28);
+}
+.nx-btn--del:hover{ transform: translateY(-1px); border-color: rgba(239,68,68,.42); box-shadow: 0 18px 56px rgba(239,68,68,.14); }
+
+/* ===== Shell ===== */
+.nx-shell{
+  margin-top: 12px;
+  display:grid;
+  gap: 12px;
+}
+
+/* Filter card */
+.nx-filter{
+  border-radius: var(--r-lg);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.035));
+  box-shadow: var(--shadow2);
+  padding: 14px;
+}
+
+.nx-filter__grid{
+  display:grid;
+  grid-template-columns: 1.3fr 1fr auto;
+  gap: 12px;
+  align-items:end;
+}
+
+.nx-field{ min-width:0; }
+.nx-label{
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(203,213,225,.86);
+  margin-bottom: 6px;
+}
+.nx-help{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(203,213,225,.62);
+}
+
+.nx-inputwrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  border-radius: 14px;
+  border: 1px solid rgba(226,232,240,.12);
+  background: rgba(0,0,0,.22);
+  overflow:hidden;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.nx-inputwrap:focus-within{
+  border-color: rgba(76,125,255,.50);
+  box-shadow: var(--ring);
+}
+
+.nx-prefix{
+  width:44px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  color: rgba(203,213,225,.78);
+  background: rgba(255,255,255,.04);
+  border-right: 1px solid rgba(226,232,240,.10);
+}
+
+.nx-input{
+  width:100%;
+  height:42px;
+  padding: 0 12px;
+  border:0;
+  outline:0;
+  background: transparent;
+  color: rgba(241,245,249,.92);
+  font-weight: 800;
+}
+.nx-input::placeholder{ color: rgba(203,213,225,.52); }
+.nx-select{ padding-right: 12px; }
+
+.nx-filter__buttons{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+}
+
+/* Bulk row */
+.nx-bulk{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(226,232,240,.10);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+}
+.nx-bulk__item{ margin:0; }
+.nx-bulk__note{
+  color: rgba(203,213,225,.70);
+  font-size: 12px;
+}
+
+/* ===== Table ===== */
+.nx-table{
+  border-radius: var(--r-lg);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.03));
+  box-shadow: var(--shadow2);
+  overflow:hidden;
+}
+
+.nx-table__wrap{
+  width:100%;
+  overflow:auto;
+  scrollbar-gutter: stable both-edges;
+}
+
+/* table core */
+.nx-table__tbl{
+  width: 100%;
+  min-width: 980px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.nx-table__tbl thead th{
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  text-align:left;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing:-.01em;
+  color: rgba(241,245,249,.90);
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(226,232,240,.12);
+  background:
+    linear-gradient(90deg, rgba(76,125,255,.16), rgba(0,229,255,.10), rgba(255,79,216,.10));
+  backdrop-filter: blur(10px);
+}
+
+.nx-table__tbl tbody td{
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(226,232,240,.08);
+  color: rgba(241,245,249,.88);
+  vertical-align: middle;
+}
+
+.nx-table__tbl tbody tr{
+  background: rgba(0,0,0,.10);
+}
+.nx-table__tbl tbody tr:hover{
+  background: rgba(255,255,255,.03);
+}
+
+/* columns */
+.nx-col-check{ width:48px; }
+.nx-col-date{ width:140px; }
+.nx-col-time{ width:90px; }
+.nx-col-dur{ width:110px; }
+.nx-col-status{ width:140px; }
+.nx-col-pri{ width:120px; }
+.nx-col-act{ width:230px; text-align:right; }
+
+/* checkbox */
+.nx-check{
+  width:18px;
+  height:18px;
+  accent-color: var(--cyan);
+}
+
+/* task cell */
+.nx-taskcell{ min-width: 320px; }
+.nx-taskcell__title{
+  font-weight: 950;
+  letter-spacing:-.01em;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  max-width: 560px;
+}
+.nx-taskcell__meta{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(203,213,225,.66);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.nx-mini{
+  padding: 4px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(226,232,240,.12);
+  background: rgba(255,255,255,.04);
+  font-weight: 900;
+}
+.nx-dot{ opacity:.65; }
+
+/* pills */
+.nx-pill{
+  display:inline-flex;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.12);
+  background: rgba(255,255,255,.04);
+  font-weight: 900;
+  font-size: 12px;
+}
+.nx-pill--dur{
+  background: linear-gradient(120deg, rgba(0,229,255,.14), rgba(76,125,255,.10));
+  border-color: rgba(0,229,255,.18);
+}
+.nx-pill--pri{
+  background: linear-gradient(120deg, rgba(168,85,247,.14), rgba(255,79,216,.08));
+  border-color: rgba(168,85,247,.18);
+}
+
+/* status badge "neo" overlay - keeps your existing classes */
+.nx-badge{
+  border:1px solid rgba(226,232,240,.12) !important;
+  background: rgba(255,255,255,.05) !important;
+  color: rgba(241,245,249,.92) !important;
+  font-weight: 950;
+  padding: 7px 10px;
+  border-radius: 999px;
+}
+
+/* actions */
+.nx-act{
+  display:inline-flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+/* empty row */
+.nx-empty{
+  padding: 18px 12px;
+  color: rgba(203,213,225,.72);
+}
+
+/* pager */
+.nx-pager{
+  padding: 12px 14px;
+  background: rgba(255,255,255,.02);
+  border-top: 1px solid rgba(226,232,240,.08);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 991.98px){
+  .nx-filter__grid{
+    grid-template-columns: 1fr 1fr;
+  }
+  .nx-filter__buttons{
+    grid-column: 1 / -1;
+    justify-content:flex-start;
+  }
+  .nx-hide-md{ display:none; }
+  .nx-table__tbl{ min-width: 760px; }
+}
+
+@media (max-width: 767.98px){
+  .nx-top{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nx-top__right{
+    width:100%;
+    justify-content:flex-start;
+  }
+  .nx-btn{
+    width:100%;
+    justify-content:center;
+  }
+  .nx-filter__grid{
+    grid-template-columns: 1fr;
+  }
+  .nx-bulk{
+    flex-direction: column;
+    align-items: stretch;
+    justify-content:flex-start;
+  }
+  .nx-bulk__note{
+    order: 99;
+  }
+}

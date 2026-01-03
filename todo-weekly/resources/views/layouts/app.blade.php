@@ -9,33 +9,25 @@
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css">
 
-  {{-- Cache-bust CSS để chắc chắn không dùng bản cũ --}}
-  <link rel="stylesheet" href="{{ asset('css/todo.css') }}?v={{ filemtime(public_path('css/todo.css')) }}">
+
+  {{-- CSS global --}}
+  <link rel="stylesheet"
+        href="{{ asset('css/todo.css') }}?v={{ file_exists(public_path('css/todo.css')) ? filemtime(public_path('css/todo.css')) : time() }}">
+
+  {{-- CSS riêng từng trang --}}
+  @stack('styles')
 </head>
 
 <body class="bg-light">
-  {{-- Sidebar (desktop + mobile offcanvas) --}}
   @include('layouts.partials.sidebar')
 
-  {{-- Main content --}}
   <div class="app-shell">
     <main class="app-main">
       <div class="container-fluid py-3">
         <div class="container">
           @include('layouts.partials.toast')
-
-          @if($errors->any())
-            <div class="alert alert-danger">
-              <div class="fw-semibold mb-1">Có lỗi dữ liệu:</div>
-              <ul class="mb-0">
-                @foreach($errors->all() as $e)
-                  <li>{{ $e }}</li>
-                @endforeach
-              </ul>
-            </div>
-          @endif
-
           @yield('content')
         </div>
       </div>
@@ -73,7 +65,7 @@
     })();
   </script>
 
-  {{-- Mobile offcanvas: click link -> close offcanvas cleanly --}}
+  {{-- Mobile offcanvas --}}
   <script>
     document.addEventListener('click', (e) => {
       const link = e.target.closest('a.mobile-nav-link');
@@ -92,6 +84,14 @@
     });
   </script>
 
+  {{-- Nếu page có @section('scripts') --}}
   @yield('scripts')
+
+  {{-- Nếu partial/page có @push('scripts') --}}
+  @stack('scripts')
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+@stack('page_scripts')
+
 </body>
 </html>

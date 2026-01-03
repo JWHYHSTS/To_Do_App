@@ -14,25 +14,32 @@ class GenerateRecurringTasks extends Command
 
     public function handle(): int
     {
-        $daysAhead = (int) $this->option('days');
-        if ($daysAhead < 1) $daysAhead = 14;
+        $daysAhead = max(1, (int) $this->option('days'));
 
-        $today = Carbon::today();
-        $toDate = $today->copy()->addDays($daysAhead);
+        // Nên dùng timezone app để khớp dashboard
+        $tz = config('app.timezone', 'Asia/Ho_Chi_Minh');
+
+        $today  = Carbon::now($tz)->startOfDay();
+        $toDate = $today->copy()->addDays($daysAhead)->endOfDay();
 
         $templates = Task::query()
             ->where('is_template', true)
-            ->whereIn('recurrence', ['daily','weekly'])
+            ->whereIn('recurrence', ['daily', 'weekly'])
             ->get();
 
         $created = 0;
 
         foreach ($templates as $tpl) {
-            $start = Carbon::parse($tpl->scheduled_date)->startOfDay();
-            $until = $tpl->recurrence_until ? Carbon::parse($tpl->recurrence_until)->endOfDay() : null;
+            $start = Carbon::parse($tpl->scheduled_date, $tz)->startOfDay();
+            $until = $tpl->recurrence_until
+                ? Carbon::parse($tpl->recurrence_until, $tz)->endOfDay()
+                : null;
 
-            // cửa sổ generate: từ ngày mai hoặc từ last_generated_for+1
-            $last = $tpl->last_generated_for ? Carbon::parse($tpl->last_generated_for)->startOfDay() : $start->copy();
+            $last = $tpl->last_generated_for
+                ? Carbon::parse($tpl->last_generated_for, $tz)->startOfDay()
+                : $start->copy();
+
+            // bắt đầu từ ngày sau last_generated_for
             $cursor = $last->copy()->addDay();
 
             while ($cursor->lte($toDate)) {
@@ -42,15 +49,13 @@ class GenerateRecurringTasks extends Command
 
                 if ($tpl->recurrence === 'daily') {
                     $shouldCreate = true;
-                }
-
-                if ($tpl->recurrence === 'weekly') {
-                    // weekly: trùng thứ với scheduled_date gốc
+                } elseif ($tpl->recurrence === 'weekly') {
                     $shouldCreate = ($cursor->dayOfWeekIso === $start->dayOfWeekIso);
                 }
 
                 if ($shouldCreate) {
                     $exists = Task::query()
+                        ->where('user_id', $tpl->user_id)          // ✅ thêm user_id để chống trùng đúng user
                         ->where('is_template', false)
                         ->where('series_id', $tpl->series_id)
                         ->whereDate('scheduled_date', $cursor->toDateString())
@@ -60,6 +65,9 @@ class GenerateRecurringTasks extends Command
                     if (!$exists) {
                         DB::transaction(function () use ($tpl, $cursor, &$created) {
                             Task::create([
+                                // ✅ BẮT BUỘC: user_id
+                                'user_id' => $tpl->user_id,
+
                                 'title' => $tpl->title,
                                 'description' => $tpl->description,
                                 'status' => $tpl->status,
@@ -75,16 +83,13 @@ class GenerateRecurringTasks extends Command
                                 'last_generated_for' => null,
                             ]);
 
-                            $tpl->last_generated_for = $cursor->toDateString();
-                            $tpl->save();
-
                             $created++;
                         });
-                    } else {
-                        // đã có rồi thì vẫn cập nhật last_generated_for để không quét mãi cùng ngày
-                        $tpl->last_generated_for = $cursor->toDateString();
-                        $tpl->save();
                     }
+
+                    // Cập nhật tiến độ generate để lần sau không quét lại
+                    $tpl->last_generated_for = $cursor->toDateString();
+                    $tpl->save();
                 }
 
                 $cursor->addDay();

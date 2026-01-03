@@ -31,6 +31,7 @@ class TaskController extends Controller
 
         $query = Task::query()
             ->where('user_id', Auth::id())
+            ->where('is_template', false)
             ->when($q !== '', function ($qq) use ($q) {
                 $qq->where('title', 'like', "%{$q}%");
             })
@@ -75,66 +76,75 @@ class TaskController extends Controller
 
     // POST /tasks
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'title'            => ['required','string','max:255'],
-            'description'      => ['nullable','string'],
-            'status'           => ['required','string'],
-            'priority'         => ['nullable','string'],
-            'duration_minutes' => ['required','integer','min:15','max:480'],
-            'scheduled_date'   => ['required','date'],
-            'scheduled_time'   => ['required'],
-            'recurrence'       => ['nullable','in:none,daily,weekly'],
-            'recurrence_until' => ['nullable','date'],
-        ]);
+{
+    $data = $request->validate([
+        'title'            => ['required','string','max:255'],
+        'description'      => ['nullable','string'],
+        'status'           => ['required','in:' . implode(',', Task::STATUSES)],
+        'priority'         => ['nullable','string'],
+        'duration_minutes' => ['required','integer','min:15','max:480'],
+        'scheduled_date'   => ['required','date'],
+        'scheduled_time'   => ['required'],
+        'recurrence'       => ['nullable','in:none,daily,weekly'],
+        'recurrence_until' => ['nullable','date'],
+    ]);
 
-        // ✅ FIX: luôn có user_id khi insert -> hết lỗi SQLSTATE[HY000] 1364
-        $userId = Auth::id();
-        $recurrence = $data['recurrence'] ?? 'none';
+    $userId = Auth::id();
 
-        // Chuẩn hoá recurrence_until
-        $until = $data['recurrence_until'] ?? null;
-        if (empty($until)) $until = null;
+    // ✅ chuẩn hóa time HH:MM để đồng bộ DB
+    $data['scheduled_time'] = Task::normalizeTime((string) $data['scheduled_time']);
 
-        // 1) Không lặp: tạo task bình thường
-        if ($recurrence === 'none') {
-            Task::create(array_merge($data, [
-                'user_id' => $userId,
-                'is_template' => false,
-                'series_id' => null,
-                'recurrence' => 'none',
-                'recurrence_until' => null,
-                'last_generated_for' => null,
-            ]));
+    $recurrence = $data['recurrence'] ?? 'none';
+    $until = $data['recurrence_until'] ?? null;
+    if (empty($until)) $until = null;
 
-            return redirect()->route('dashboard')->with('success', 'Đã tạo task.');
-        }
-
-        // 2) Có lặp: tạo series_id để gom nhóm
-        $seriesId = (string) Str::uuid();
-
-        // 2.1) Template (không hiển thị)
-        Task::create(array_merge($data, [
-            'user_id' => $userId,
-            'is_template' => true,
-            'series_id' => $seriesId,
-            'recurrence' => $recurrence,
-            'recurrence_until' => $until,
-            'last_generated_for' => $data['scheduled_date'], // đã "generate" cho ngày này
-        ]));
-
-        // 2.2) Occurrence cho ngày đang tạo (hiển thị)
-        Task::create(array_merge($data, [
+    if ($recurrence === 'none') {
+        Task::create([
+            ...$data,
             'user_id' => $userId,
             'is_template' => false,
-            'series_id' => $seriesId,
-            'recurrence' => 'none',          // occurrence không tự lặp
+            'series_id' => null,
+            'recurrence' => 'none',
             'recurrence_until' => null,
             'last_generated_for' => null,
-        ]));
+        ]);
 
-        return redirect()->route('dashboard')->with('success', 'Đã tạo task (kèm cấu hình lặp).');
+        return redirect()->route('dashboard')
+            ->with('toast', 'Đã tạo task.')
+            ->with('toast_type', 'success')
+            ->with('toast_title', 'Thành công');
     }
+
+    $seriesId = (string) Str::uuid();
+
+    // Template (KHÔNG HIỂN THỊ)
+    Task::create([
+        ...$data,
+        'user_id' => $userId,
+        'is_template' => true,
+        'series_id' => $seriesId,
+        'recurrence' => $recurrence,
+        'recurrence_until' => $until,
+        // ✅ đã có occurrence cho ngày gốc => last_generated_for = scheduled_date
+        'last_generated_for' => $data['scheduled_date'],
+    ]);
+
+    // Occurrence cho ngày hiện tại (HIỂN THỊ)
+    Task::create([
+        ...$data,
+        'user_id' => $userId,
+        'is_template' => false,
+        'series_id' => $seriesId,
+        'recurrence' => 'none',
+        'recurrence_until' => null,
+        'last_generated_for' => null,
+    ]);
+
+    return redirect()->route('dashboard')
+        ->with('toast', 'Đã tạo task (kèm cấu hình lặp).')
+        ->with('toast_type', 'success')
+        ->with('toast_title', 'Thành công');
+}
 
     // GET /tasks/{task}/edit
     public function edit(Task $task)
